@@ -1,0 +1,26 @@
+{
+  "name": "cda-dl",
+  "version": "1.0.0",
+  "description": "Utility tool to download video files from CDA",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": "./index.js"
+  },
+  "module": "index.js",
+  "bin": {
+    "cda-dl": "index.js"
+  },
+  "dependencies": {
+    "puppeteer": "^22.11.0"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "publishConfig": {
+    "provenance": true
+  }
+}
