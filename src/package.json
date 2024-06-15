@@ -2,7 +2,26 @@
   "name": "cda-dl",
   "version": "1.0.0",
   "description": "Utility tool to download video files from CDA",
+  "keywords": [
+    "cda",
+    "video",
+    "download",
+    "downloader",
+    "cli",
+    "util",
+    "utility",
+    "tool"
+  ],
+  "homepage": "https://github.com/k3nsei/cda-dl",
+  "bugs": {
+    "url": "https://github.com/k3nsei/cda-dl/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/k3nsei/cda-dl.git"
+  },
   "license": "MIT",
+  "author": "Piotr Stępniewski <k3nsei.pl@gmail.com> (https://github.com/k3nsei)",
   "type": "module",
   "exports": {
     "./package.json": {
