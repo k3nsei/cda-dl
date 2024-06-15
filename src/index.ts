@@ -10,7 +10,7 @@ import { type Browser, launch, type Page } from 'puppeteer';
 main().catch((error) => console.error(error.message));
 
 async function main() {
-  const { url, output, timeout, ui } = await parseCommand();
+  const { url, output, ageConsent, timeout, ui } = await parseCommand();
 
   const { id } = parseVideoUrl(url);
 
@@ -24,6 +24,25 @@ async function main() {
   await page.goto(url);
   await page.setViewport({ width: 1280, height: 720 });
   await page.waitForNetworkIdle();
+
+  // Check for age consent
+  const ageConfirmButtonSelector = 'button[name="age_confirm"]';
+  const ageConfirmButton = await page.$(ageConfirmButtonSelector);
+
+  if (ageConfirmButton && !ageConsent) {
+    return logErrorThenExit(
+      [
+        'Please be advised that in order to download this video,',
+        'you must confirm that you are at least 18 years of age.',
+        'To confirm your age, please pass the `--ageConsent` argument.',
+      ].join('\n'),
+    );
+  }
+
+  // Confirm age consent
+  if (ageConfirmButton && ageConsent) {
+    await ageConfirmButton.click();
+  }
 
   // Accept cookies
   const acceptCookiesButtonSelector = '.fc-consent-root .fc-cta-consent';
@@ -84,6 +103,7 @@ async function main() {
 async function parseCommand(): Promise<{
   url: string;
   output: string;
+  ageConsent: boolean;
   timeout: number;
   ui: boolean;
 }> {
@@ -107,6 +127,10 @@ async function parseCommand(): Promise<{
           short: 't',
           default: '',
         },
+        ageConsent: {
+          type: 'boolean',
+          default: false,
+        },
         ui: {
           type: 'boolean',
           default: false,
@@ -116,10 +140,10 @@ async function parseCommand(): Promise<{
 
     const {
       positionals: [url],
-      values: { output = '', timeout = '', ui = false },
+      values: { output = '', timeout = '', ageConsent = false, ui = false },
     } = args;
 
-    return { url, output, timeout: parseInt(timeout) || 300000, ui };
+    return { url, output, ageConsent, timeout: parseInt(timeout) || 300000, ui };
   } catch (error) {
     return logErrorThenExit(error instanceof Error ? error.message : 'Unable to parse cda-dl command');
   }
