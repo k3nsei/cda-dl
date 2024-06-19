@@ -12,7 +12,7 @@
     "watch": "tsc --project tsconfig.json --watch"
   },
   "dependencies": {
-    "puppeteer": "^22.11.0"
+    "puppeteer": "^22.11.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
